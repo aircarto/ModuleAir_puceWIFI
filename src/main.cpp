@@ -26,19 +26,26 @@ ESP8266WebServer server(80);
 void createWebServer()
 {
   {
+    // Page index
     server.on("/", []()
               {
 
       IPAddress ip = WiFi.softAPIP();
       String ipStr = String(ip[0]) + '.' + String(ip[1]) + '.' + String(ip[2]) + '.' + String(ip[3]);
       content = "<!DOCTYPE HTML>\r\n<html>ESP8266 WiFi Connectivity Setup ";
+      //bouton "scan" qui envoie sur la page scan
       content += "<form action=\"/scan\" method=\"POST\"><input type=\"submit\" value=\"scan\"></form>";
+      //affichage de l'adresse ip
       content += ipStr;
       content += "<p>";
+      //affichage des réseaux wifi dispo
       content += st;
+      //bouton submit -> qui nous envoie sur la page setting !!!
       content += "</p><form method='get' action='setting'><label>SSID: </label><input name='ssid' length=32><input name='pass' length=64><input type='submit'></form>";
       content += "</html>";
       server.send(200, "text/html", content); });
+
+    // page scan
     server.on("/scan", []()
               {
       //setupAP();
@@ -48,22 +55,34 @@ void createWebServer()
       content = "<!DOCTYPE HTML>\r\n<html>go back";
       server.send(200, "text/html", content); });
 
+    // page setting
+    // cette page s'active de cette manière:
+    // 192.168.4.1/setting?ssid=AAAA&pass=BBBB
     server.on("/setting", []()
               {
+
+                //on récupère les identifiants
                 String qsid = server.arg("ssid");
                 String qpass = server.arg("pass");
+
+                //si les identifiants ne sont pas nuls
                 if (qsid.length() > 0 && qpass.length() > 0)
                 {
+                  //on vide la mémoire (0 partout)
                   Serial.println("clearing eeprom");
                   for (int i = 0; i < 96; ++i)
                   {
                     EEPROM.write(i, 0);
                   }
+
+                  Serial.print("Nom du réseau choisi: ");
                   Serial.println(qsid);
                   Serial.println("");
+                  Serial.print("Mot de passe choisi: ");
                   Serial.println(qpass);
                   Serial.println("");
 
+                  //on écrit dans la mémoire le nom du réseau (à partir de la cellule 0)
                   Serial.println("writing eeprom ssid:");
                   for (int i = 0; i < qsid.length(); ++i)
                   {
@@ -71,6 +90,8 @@ void createWebServer()
                     Serial.print("Wrote: ");
                     Serial.println(qsid[i]);
                   }
+
+                  //on écrit dans la mémoire le nom du mot de passe (à partir de la cellule 32)
                   Serial.println("writing eeprom pass:");
                   for (int i = 0; i < qpass.length(); ++i)
                   {
@@ -82,6 +103,7 @@ void createWebServer()
 
                   content = "{\"Success\":\"saved to eeprom... reset to boot into new wifi\"}";
                   statusCode = 200;
+                  //l'ESP redémarre
                   ESP.reset();
                 }
                 else
@@ -132,6 +154,7 @@ void launchWeb()
 
 void setupAP(void)
 {
+
   WiFi.mode(WIFI_STA);
   WiFi.disconnect();
   delay(100);
@@ -172,6 +195,8 @@ void setupAP(void)
   }
   st += "</ol>";
   delay(100);
+
+  // on crée ici le réseau Local du ESP8266
   WiFi.softAP("ModuleAir_puceWifi", "");
   Serial.println("Initializing_Wifi_accesspoint");
   launchWeb();
@@ -238,10 +263,12 @@ void setup()
 
 void loop()
 {
+  // SI on est connecté au WEB
   if ((WiFi.status() == WL_CONNECTED))
   {
 
     // Add your program code here which the esp8266 has to perform when it connects to network
+
     digitalWrite(LED_BUILTIN, HIGH); // Arduino: turn the LED on (HIGH)
                                      // D1 Mini: turns the LED *off*
     delay(1000);                     // wait for a second
