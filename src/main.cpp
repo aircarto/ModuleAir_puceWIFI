@@ -122,7 +122,7 @@ void setup()
     display.display();
   */
 
-  DateTime.setServer("time.pool.aliyun.com");
+  DateTime.setServer("pool.ntp.org");
   DateTime.setTimeZone("CST-1");
   DateTime.begin();
 
