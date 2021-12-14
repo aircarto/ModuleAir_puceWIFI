@@ -56,6 +56,7 @@ int epochTime;
 const byte numChars = 32;
 char receivedChars[numChars];
 char tempChars[numChars]; // temporary array for use when parsing
+char date[] = "2021-12-14";
 
 // variables to hold the parsed data
 char DeviceID[numChars] = {0};
@@ -221,8 +222,10 @@ void showParsedData()
 
 void getDate()
 {
-  Serial.printf("Local  Time: %s\n", DateTime.format(DateFormatter::SIMPLE).c_str());
-  formattedDate = DateTime.format(DateFormatter::SIMPLE).c_str();
+  // Serial.printf("Local  Time: %s\n", DateTime.format(DateFormatter::SIMPLE).c_str());
+  //  formattedDate = DateTime.format(DateFormatter::SIMPLE).c_str();
+  snprintf(date, 11, "%s", DateTime.format(DateFormatter::SIMPLE).c_str());
+  Serial.printf("%s\n", date);
 }
 
 // ============ LOOP ============
@@ -246,9 +249,9 @@ void loop()
     parseData();
     showParsedData();
     sendAirCarto(); // envoi des datas sur le serveur de Aircarto
-    // sendAtmoSud(); //envoi des datas sur le serveur d'AtmoSud
-    getDate();
-    // getDataAPI_ATMOSUD();   //get pollution from geoserver
+    // sendAtmoSud();       //envoi des datas sur le serveur d'AtmoSud
+    getDate();         // récupération de la date
+    getAtmoSud_PM10(); // récupération PM_10
     newData = false;
   }
 

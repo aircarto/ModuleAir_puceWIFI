@@ -175,11 +175,11 @@ void getAtmoSud_PM10()
     urlATMO_geoService += ",";
     urlATMO_geoService += String(latitudePlus, 5);
     urlATMO_geoService += "&LAYERS=azurjour:paca-multi-";
-    urlATMO_geoService += dayStamp;
+    urlATMO_geoService += date;
     urlATMO_geoService += "&QUERY_LAYERS=azurjour:paca-multi-";
-    urlATMO_geoService += dayStamp;
+    urlATMO_geoService += date;
     urlATMO_geoService += "&TYPENAME=azurjour:paca-multi-";
-    urlATMO_geoService += dayStamp;
+    urlATMO_geoService += date;
     urlATMO_geoService += "&srs=EPSG:4326";
 
     Serial.print("Requesting URL: ");

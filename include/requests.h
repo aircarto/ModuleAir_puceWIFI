@@ -19,6 +19,8 @@ extern float latitudePlus;
 extern float longitudePlus;
 extern String dayStamp;
 extern String data;
+extern char date[11];
+
 void sendAirCarto();
 void sendAtmoSud();
 void getAtmoSud_PM10();
