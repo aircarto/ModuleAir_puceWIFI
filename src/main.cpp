@@ -258,3 +258,20 @@ void loop()
   getDate();
   delay(5000);
 }
+
+
+/** parse only date from class DateTimeClass 
+* @param buffer pointer to store the date, need to be more than 10 
+* @retval return 1 if succed 0 fail
+**/
+bool parse_date( char* date )
+{
+  int cx;
+
+  cx = snprintf( date, 11, "%s", DateTime.format(DateFormatter::SIMPLE).c_str());
+
+  if( cx == 10) // check returned value 
+    return 1;  // 10 char get copied 
+  else
+    return 0; // error data corrupted
+}

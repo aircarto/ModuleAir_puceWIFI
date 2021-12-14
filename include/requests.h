@@ -28,4 +28,10 @@ void getAtmoSud_PM2_5();
 void getAtmoSud_O3();
 void getAtmoSud_NO2();
 
+/** parse only date from class DateTimeClass 
+* @param buffer pointer to store the date, need to be more than 10
+* @retval return 1 if succed 0 fail 
+**/
+bool parse_date( char* date );
+
 #endif
