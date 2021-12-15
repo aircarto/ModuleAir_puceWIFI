@@ -134,7 +134,6 @@ void setup()
   else
   {
     Serial.printf("Date Now is %s\n", DateTime.toISOString().c_str());
-    Serial.printf("Timestamp is %ld\n", DateTime.now());
   }
 }
 
@@ -254,7 +253,4 @@ void loop()
     getAtmoSud_PM10(); // récupération PM_10
     newData = false;
   }
-
-  getDate();
-  delay(5000);
 }
