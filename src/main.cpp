@@ -43,8 +43,11 @@ Adafruit_SSD1306 display(0x3C, D2, D5); // Address set here 0x3C that I found in
 const char *nomWIFI = "ModuleAir";
 const char *codeWIFI = "ModuleAir";
 
+// const char *nomWIFI = "ATMO_MCPT";
+// const char *codeWIFI = "255928th7p";
+
 // nom de l'esp sur le réseau
-const char *HostName = "ModuleAir730";
+const char *HostName = "ModuleAir475";
 
 String data;
 String json;
@@ -249,8 +252,10 @@ void loop()
     showParsedData();
     sendAirCarto(); // envoi des datas sur le serveur de Aircarto
     // sendAtmoSud();       //envoi des datas sur le serveur d'AtmoSud
-    getDate();         // récupération de la date
-    getAtmoSud_PM10(); // récupération PM_10
+
+    // getDate();         // récupération de la date
+    // getAtmoSud_PM10(); // récupération PM_10 et envoi sur Arduino Mega
+
     newData = false;
   }
 }
